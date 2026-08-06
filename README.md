@@ -40,8 +40,13 @@ Esse é o **único** lugar do projeto com o link. Os quatro botões da página
 Depois de editar, publique:
 
 ```bash
-vercel deploy --prod
+git add -A
+git commit -m "troca o link do grupo"
+git push
 ```
+
+A Vercel está conectada a este repositório: **todo push na `main` publica
+sozinho**. Não é preciso rodar nada da Vercel na mão.
 
 ---
 
@@ -81,7 +86,13 @@ Sem framework, sem build, sem dependência. É HTML, CSS e JavaScript puro.
 Mobile-first de verdade — quase todo o público acessa pelo celular, então o
 layout é desenhado para a tela pequena e o desktop se adapta depois.
 
-Paleta tirada direto da logo:
+**O arco é a assinatura.** A logo da Fiorella tem um arco rosa com um círculo
+pêssego encostando no ombro direito. O hero reencena essa composição em escala
+de página: um arco de traço fino com o sol atrás. Tudo que vive dentro dele
+(título, subtítulo, botão e a nota) respeita a variável `--dentro-arco`, para
+nada encostar na linha.
+
+Paleta tirada direto dos pixels da logo:
 
 | Cor | Hex | Uso |
 |---|---|---|
@@ -89,9 +100,12 @@ Paleta tirada direto da logo:
 | Rosa arco | `#FBC9CF` | blocos e cards |
 | Rosa forte | `#DE6A80` | botões e destaques |
 | Marrom taupe | `#6E4C3D` | textos e títulos |
-| Pêssego | `#FBCE96` | acentos |
+| Pêssego | `#FBCE96` | o sol, acentos |
 
-Tipografia: **Cormorant Garamond** (títulos) + **Jost** (corpo).
+Tipografia: **Fraunces** (títulos) + **Jost** (corpo).
+
+Os logos das lojas ficam em cinza quente por padrão e voltam à cor original
+ao toque — assim as marcas são reconhecíveis sem quebrar a paleta.
 
 ---
 
