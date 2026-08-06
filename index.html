@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#FDDEE1">
 
   <title>Fiorella Promos — Achadinhos &amp; Promoções</title>
-  <meta name="description" content="Achadinhos que valem a pena, todo dia no seu WhatsApp. Cupons e promoções selecionados de Shopee, Mercado Livre e Amazon. Entre no grupo, é de graça.">
+  <meta name="description" content="Promoções todo dia no seu WhatsApp. Cupons e achadinhos selecionados de Shopee, Mercado Livre e Amazon. Entre no grupo, é de graça.">
 
   <!-- Como o link aparece quando alguém compartilha no WhatsApp/Instagram -->
   <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -28,18 +28,21 @@
 
   <!-- ============ HERO ============ -->
   <header class="hero">
-    <div class="hero__glow" aria-hidden="true"></div>
+    <!-- O arco da logo em escala de página, com o sol no ombro -->
+    <div class="hero__arco" aria-hidden="true">
+      <span class="hero__arco-linha"></span>
+      <span class="hero__sol"></span>
+    </div>
 
-    <div class="container">
+    <div class="container hero__conteudo">
       <img class="hero__logo" src="assets/logo.jpg" alt="Fiorella Promos" width="180" height="180">
 
       <h1 class="hero__title">
-        Achadinhos que <em>valem a pena</em>,<br>
-        todo dia no seu WhatsApp
+        Promoções <em>todo dia</em> no seu WhatsApp
       </h1>
 
       <p class="hero__subtitle">
-        Garimpo as melhores ofertas de beleza, casa, moda e autocuidado
+        Procuro as melhores ofertas de beleza, casa, moda e autocuidado
         &mdash; e mando tudo pronto pra você no grupo. De graça.
       </p>
 
@@ -78,7 +81,7 @@
   <!-- ============ BENEFÍCIOS ============ -->
   <section class="section" id="beneficios">
     <div class="container">
-      <p class="eyebrow">Por que entrar</p>
+      <p class="eyebrow">Por que entrar?</p>
       <h2 class="section__title">O que você recebe no grupo</h2>
 
       <ul class="cards">
@@ -86,7 +89,7 @@
           <span class="card__emoji" aria-hidden="true">🎟️</span>
           <h3 class="card__title">Cupons e promoções todo dia</h3>
           <p class="card__text">
-            Eu garimpo, comparo preço e só mando o que realmente está barato.
+            Eu procuro, comparo preço e só mando o que realmente está barato.
             Você não precisa caçar nada.
           </p>
         </li>
@@ -114,7 +117,7 @@
           <h3 class="card__title">Sem spam, sem bagunça</h3>
           <p class="card__text">
             Só eu posto no grupo. Ninguém fica mandando bom dia, corrente ou
-            figurinha. É promoção e pronto.
+            figurinha.
           </p>
         </li>
       </ul>
@@ -132,9 +135,9 @@
       </p>
 
       <ul class="stores">
-        <li class="store store--shopee">Shopee</li>
-        <li class="store store--ml">Mercado Livre</li>
-        <li class="store store--amazon">Amazon</li>
+        <li class="store"><img class="store__logo store__logo--shopee" src="assets/lojas/shopee.svg" alt="Shopee" loading="lazy"></li>
+        <li class="store"><img class="store__logo store__logo--ml" src="assets/lojas/mercadolivre.svg" alt="Mercado Livre" loading="lazy"></li>
+        <li class="store"><img class="store__logo store__logo--amazon" src="assets/lojas/amazon.svg" alt="Amazon" loading="lazy"></li>
       </ul>
     </div>
   </section>
@@ -145,7 +148,7 @@
   <section class="section" id="prova-social" hidden>
     <div class="container">
       <p class="eyebrow">Quem já aproveitou</p>
-      <h2 class="section__title">Elas garimparam com a gente</h2>
+      <h2 class="section__title">Elas aproveitaram</h2>
       <ul class="proofs" id="proofs"></ul>
     </div>
   </section>
@@ -155,9 +158,7 @@
     <div class="container">
       <span class="finalcta__flower" aria-hidden="true">🌸</span>
       <h2 class="finalcta__title">Bora economizar juntas?</h2>
-      <p class="finalcta__text">
-        É um clique. Você entra, dá uma olhada, e se não curtir é só sair.
-      </p>
+      <p class="finalcta__text">É só clicar.</p>
 
       <a class="btn btn--primary" data-link="whatsapp" href="#" rel="noopener">
         <span class="btn__icon" aria-hidden="true">
@@ -182,11 +183,9 @@
       </p>
 
       <p class="footer__disclaimer">
-        A Fiorella Promos <strong>não é uma loja</strong>. Somos um canal de
-        curadoria que seleciona e divulga ofertas de lojas oficiais. Ao clicar
-        em um achadinho você é levada direto ao site da loja, onde a compra
-        acontece. Podemos receber uma comissão pelas vendas &mdash; sem nenhum
-        custo a mais pra você. Preços e disponibilidade mudam a qualquer momento.
+        A Fiorella Promos <strong>não é uma loja</strong>. É um canal de
+        curadoria que seleciona e divulga ofertas de lojas oficiais. Preço e
+        estoque mudam a qualquer momento.
       </p>
 
       <p class="footer__copy">© <span id="ano"></span> Fiorella Promos</p>

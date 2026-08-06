@@ -17,7 +17,7 @@
   --creme:        #FFF6F3;
 
   /* Tipografia */
-  --serif: "Cormorant Garamond", Georgia, serif;
+  --serif: "Fraunces", Georgia, serif;
   --sans:  "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Espaçamento */
@@ -28,6 +28,9 @@
 
   --sombra:      0 4px 20px rgba(110, 76, 61, .08);
   --sombra-cta:  0 6px 18px rgba(222, 106, 128, .35);
+
+  /* largura útil dentro do arco — deixa folga pra linha do arco respirar */
+  --dentro-arco: 19rem;
 }
 
 /* ---------- Reset ---------- */
@@ -83,33 +86,65 @@ body {
   overflow: hidden;
 }
 
-/* brilho pêssego atrás, igual o circulinho da logo */
-.hero__glow {
+/* ---- A entrada: o arco da logo em escala de página ---- */
+
+.hero__arco {
   position: absolute;
-  top: -140px;
-  right: -110px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(251, 206, 150, .75) 0%, rgba(251, 206, 150, 0) 70%);
+  top: 2rem;
+  left: 50%;
+  translate: -50% 0;
+  width: min(22rem, 92vw);
+  height: min(29rem, 126vw);
   pointer-events: none;
 }
 
-.hero__logo {
-  width: 170px;
-  height: auto;
-  margin: 0 auto 1.75rem;
+.hero__arco-linha {
+  position: absolute;
+  inset: 0;
+  border: 1.15px solid rgba(110, 76, 61, .14);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 32% 32% 0 0;
+  background: linear-gradient(180deg, rgba(251, 201, 207, .55), rgba(251, 201, 207, 0) 78%);
+}
+
+/* o sol pêssego encostando no ombro do arco — igual na logo */
+.hero__sol {
+  position: absolute;
+  top: -1.4rem;
+  right: -1.6rem;
+  width: 8.5rem;
+  height: 8.5rem;
   border-radius: 50%;
-  box-shadow: var(--sombra);
+  background: var(--pessego);
+  opacity: .62;
+  mix-blend-mode: multiply;
+}
+
+.hero__conteudo { position: relative; }
+
+.hero__logo {
+  width: 138px;
+  height: auto;
+  margin: 0 auto 1.6rem;
+  border-radius: 50%;
+  box-shadow: 0 6px 24px rgba(110, 76, 61, .1);
 }
 
 .hero__title {
   font-family: var(--serif);
+  font-optical-sizing: auto;
   font-weight: 400;
-  font-size: clamp(2rem, 8.5vw, 2.6rem);
-  line-height: 1.2;
-  letter-spacing: .01em;
+  font-size: clamp(2rem, 8.2vw, 2.55rem);
+  line-height: 1.16;
+  letter-spacing: -.012em;
   margin-bottom: 1rem;
+
+  /* equilibra as linhas sozinho, sem <br> na mão */
+  text-wrap: balance;
+
+  /* tudo que fica dentro do arco respeita a mesma largura */
+  max-width: min(15ch, var(--dentro-arco));
+  margin-inline: auto;
 }
 
 .hero__title em {
@@ -120,7 +155,7 @@ body {
 .hero__subtitle {
   font-size: 1.02rem;
   color: var(--marrom-claro);
-  max-width: 25rem;
+  max-width: var(--dentro-arco);
   margin: 0 auto 2rem;
 }
 
@@ -129,8 +164,12 @@ body {
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--marrom-claro);
-  margin-top: 1rem;
+  max-width: var(--dentro-arco);
+  margin: 1rem auto 0;
 }
+
+/* o botão do hero também vive dentro do arco */
+.hero__conteudo .btn { max-width: var(--dentro-arco); }
 
 /* ==========================================================================
    BOTÕES
@@ -305,18 +344,33 @@ body {
 }
 
 .store {
-  padding: .65rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  padding: .7rem 1.35rem;
   border-radius: 999px;
   background: var(--branco);
-  font-size: .92rem;
-  font-weight: 500;
-  letter-spacing: .03em;
   box-shadow: var(--sombra);
 }
 
-.store--shopee { color: #EE4D2D; }
-.store--ml     { color: #A8880B; }
-.store--amazon { color: #232F3E; }
+/* Cinza quente por padrão, cor real ao tocar/passar o mouse */
+.store__logo {
+  width: auto;
+  filter: grayscale(1) sepia(.4) brightness(.82);
+  opacity: .55;
+  transition: filter .35s ease, opacity .35s ease;
+}
+
+.store:hover .store__logo,
+.store:active .store__logo,
+.store:focus-within .store__logo {
+  filter: none;
+  opacity: 1;
+}
+
+/* alturas ajustadas pra ficarem opticamente do mesmo tamanho */
+.store__logo--shopee { height: 26px; }
+.store__logo--ml     { height: 22px; }
+.store__logo--amazon { height: 20px; }
 
 /* ---------- Prova social ---------- */
 
@@ -484,14 +538,20 @@ body {
    ========================================================================== */
 
 @media (min-width: 48rem) {
-  :root { --largura: 60rem; }
+  :root {
+    --largura: 60rem;
+    --dentro-arco: 25rem;
+  }
 
   body { padding-bottom: 0; }
 
-  .hero { padding: 4.5rem 0 4rem; }
-  .hero__logo { width: 210px; }
-  .hero__title { font-size: 3.1rem; }
+  .hero { padding: 5rem 0 4rem; }
+  .hero__logo { width: 160px; }
+  .hero__title { font-size: 2.9rem; max-width: var(--dentro-arco); }
   .hero__subtitle { font-size: 1.1rem; }
+
+  .hero__arco { width: 29rem; height: 38rem; top: 3rem; }
+  .hero__sol { width: 12rem; height: 12rem; top: -2.5rem; right: -3.5rem; }
 
   .quicklinks__grid { max-width: 34rem; margin-inline: auto; }
 
