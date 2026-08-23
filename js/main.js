@@ -14,6 +14,11 @@ const CONFIG = {
   // Instagram da Fiorella
   instagram: "https://www.instagram.com/fiorellapromos",
 
+  // 🔴 TROQUE AQUI: número do pixel da Meta, usado para medir os anúncios.
+  // Onde achar: Gerenciador de Eventos > o conjunto de dados > o número embaixo do nome.
+  // Só o número, sem mais nada. Deixe "" para o site não rastrear ninguém.
+  pixel: "294171596467632",
+
 };
 
 /* --------------------------------------------------------------------------
@@ -109,7 +114,36 @@ const DEPOIMENTOS = [
   const ano = document.getElementById("ano");
   if (ano) ano.textContent = new Date().getFullYear();
 
-  /* ---- 6. Aviso no console se o link ainda for o placeholder ---- */
+  /* ---- 6. Pixel da Meta ----
+     Só liga se CONFIG.pixel estiver preenchido. Mede duas coisas:
+     quem chegou na página (PageView) e quem clicou para entrar no
+     grupo (Lead) — é o Lead que diz se o anúncio está funcionando. */
+
+  if (CONFIG.pixel) {
+
+    /* Trecho oficial da Meta. Não mexa aqui: só carrega o fbevents.js. */
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+    fbq("init", CONFIG.pixel);
+    fbq("track", "PageView");
+
+    /* Cada botão que leva ao grupo conta como um Lead. */
+    document.querySelectorAll('[data-link="whatsapp"]').forEach(function (el) {
+      el.addEventListener("click", function () {
+        fbq("track", "Lead");
+      });
+    });
+  }
+
+  /* ---- 7. Aviso no console se o link ainda for o placeholder ---- */
 
   if (CONFIG.whatsapp.includes("COLE-O-CODIGO")) {
     console.warn(
