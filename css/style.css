@@ -168,6 +168,19 @@ body {
   margin: 1rem auto 0;
 }
 
+/* quantas já entraram — prova social curta, logo abaixo do botão */
+.hero__prova {
+  font-size: .95rem;
+  color: var(--marrom-claro);
+  max-width: var(--dentro-arco);
+  margin: .9rem auto 0;
+}
+
+.hero__prova strong {
+  font-weight: 600;
+  color: var(--rosa-escuro);
+}
+
 /* o botão do hero também vive dentro do arco */
 .hero__conteudo .btn { max-width: var(--dentro-arco); }
 

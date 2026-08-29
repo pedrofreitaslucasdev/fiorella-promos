@@ -11,6 +11,12 @@ const CONFIG = {
   // Quando o grupo lotar (1024 pessoas), crie o grupo 2 e troque só esta linha.
   whatsapp: "https://chat.whatsapp.com/GQi8lhr95as2PYk3Pf4jZ0",
 
+  // 🔴 TROQUE AQUI: quantas mulheres já entraram no grupo.
+  // Aparece embaixo do botão do hero, pra visitante ver que tem gente dentro.
+  // Atualize de vez em quando, conforme o grupo cresce.
+  // Deixe 0 para a linha sumir do site.
+  membros: 25,
+
   // Instagram da Fiorella
   instagram: "https://www.instagram.com/fiorellapromos",
 
@@ -52,7 +58,17 @@ const DEPOIMENTOS = [
     el.target = "_blank";
   });
 
-  /* ---- 2. Monta a prova social, se houver ---- */
+  /* ---- 2. Mostra quantas já entraram no grupo ---- */
+
+  const provaNumero = document.getElementById("prova-numero");
+  const provaTotal = document.getElementById("prova-total");
+
+  if (provaNumero && provaTotal && CONFIG.membros > 0) {
+    provaTotal.textContent = CONFIG.membros;
+    provaNumero.hidden = false;
+  }
+
+  /* ---- 3. Monta a prova social, se houver ---- */
 
   const secaoProva = document.getElementById("prova-social");
   const listaProva = document.getElementById("proofs");
@@ -73,7 +89,7 @@ const DEPOIMENTOS = [
     secaoProva.hidden = false;
   }
 
-  /* ---- 3. Barra fixa: aparece quando o hero sai da tela ---- */
+  /* ---- 4. Barra fixa: aparece quando o hero sai da tela ---- */
 
   const barra = document.getElementById("stickybar");
   const hero = document.querySelector(".hero");
@@ -87,7 +103,7 @@ const DEPOIMENTOS = [
     }, { threshold: 0 }).observe(hero);
   }
 
-  /* ---- 4. Cards entram suavemente conforme você rola ---- */
+  /* ---- 5. Cards entram suavemente conforme você rola ---- */
 
   const aparecer = document.querySelectorAll(".reveal");
 
@@ -109,12 +125,12 @@ const DEPOIMENTOS = [
     aparecer.forEach(function (el) { el.classList.add("is-in"); });
   }
 
-  /* ---- 5. Ano do rodapé ---- */
+  /* ---- 6. Ano do rodapé ---- */
 
   const ano = document.getElementById("ano");
   if (ano) ano.textContent = new Date().getFullYear();
 
-  /* ---- 6. Pixel da Meta ----
+  /* ---- 7. Pixel da Meta ----
      Só liga se CONFIG.pixel estiver preenchido. Mede duas coisas:
      quem chegou na página (PageView) e quem clicou para entrar no
      grupo (Lead) — é o Lead que diz se o anúncio está funcionando. */
@@ -143,7 +159,7 @@ const DEPOIMENTOS = [
     });
   }
 
-  /* ---- 7. Aviso no console se o link ainda for o placeholder ---- */
+  /* ---- 8. Aviso no console se o link ainda for o placeholder ---- */
 
   if (CONFIG.whatsapp.includes("COLE-O-CODIGO")) {
     console.warn(
