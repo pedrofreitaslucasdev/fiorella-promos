@@ -302,6 +302,29 @@ body {
   color: var(--marrom-claro);
 }
 
+/* Link pro catálogo: presente, mas discreto — contorno em vez de preenchido,
+   pra não disputar atenção com o botão verde do grupo, que é o objetivo da
+   página. Centralizado na mão porque o pai não centraliza bloco. */
+.vitrine__mais {
+  display: block;
+  width: fit-content;
+  margin: 1.1rem auto 0;
+  padding: .5rem 1.1rem;
+
+  border: 1px solid var(--rosa-forte);
+  border-radius: 999px;
+  color: var(--rosa-escuro);
+  font-size: .88rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: transparent;
+}
+
+.vitrine__mais:hover {
+  background: var(--rosa-forte);
+  color: var(--branco);
+}
+
 .vitrine__lead  { margin-bottom: 1rem; }
 .vitrine__aviso { margin-top: .9rem; }
 

@@ -11,6 +11,11 @@ const CONFIG = {
   // Quando o grupo lotar (1024 pessoas), crie o grupo 2 e troque só esta linha.
   whatsapp: "https://chat.whatsapp.com/GQi8lhr95as2PYk3Pf4jZ0",
 
+  // 🔴 TROQUE AQUI: o catálogo de achadinhos. Aparece como um link discreto
+  // embaixo da vitrine — os cards continuam levando pro grupo, porque é o
+  // grupo que a campanha otimiza. Deixe "" para o link sumir da página.
+  catalogo: "https://achadinhos-fiorella.vercel.app",
+
   // Pra onde vai o clique num produto da vitrine:
   //   "grupo" .. abre o convite do WhatsApp (é o que vale hoje: o site de
   //              catálogo da Sarah ainda não existe, e mandar direto pra
@@ -233,7 +238,25 @@ const PRODUTOS = [
     }
   }
 
-  /* ---- 3. Monta a vitrine ---- */
+  /* ---- 3. Link pro catálogo, embaixo da vitrine ----
+     O catálogo mora em outro endereço e NÃO tem pixel: quem sai daqui some
+     da medição. Por isso o clique é contado aqui, antes de a pessoa ir
+     embora — como ViewContent, nunca como Lead, que significa "entrou no
+     grupo" e é o evento que a campanha usa pra otimizar. */
+
+  const verCatalogo = document.getElementById("ver-catalogo");
+
+  if (verCatalogo && CONFIG.catalogo) {
+    verCatalogo.href = CONFIG.catalogo;
+    verCatalogo.target = "_blank";
+    verCatalogo.hidden = false;
+
+    verCatalogo.addEventListener("click", function () {
+      if (window.fbq) fbq("track", "ViewContent", { content_name: "catalogo" });
+    });
+  }
+
+  /* ---- 4. Monta a vitrine ---- */
 
   const vitrine = document.getElementById("vitrine");
   const trilho = document.getElementById("vitrine-trilho");
@@ -333,7 +356,7 @@ const PRODUTOS = [
 
     vitrine.hidden = false;
 
-    /* ---- 4. A esteira anda sozinha, e para quando a pessoa encosta ---- */
+    /* ---- 5. A esteira anda sozinha, e para quando a pessoa encosta ---- */
 
     if (!semMovimento) {
       let parada = 0;                 // enquanto for > 0, a esteira fica parada
@@ -376,7 +399,7 @@ const PRODUTOS = [
     }
   }
 
-  /* ---- 5. Barra fixa: aparece quando o cartão da dobra sai da tela ---- */
+  /* ---- 6. Barra fixa: aparece quando o cartão da dobra sai da tela ---- */
 
   const barra = document.getElementById("barrafixa");
   const cartao = document.querySelector(".cartao");
@@ -390,12 +413,12 @@ const PRODUTOS = [
     }, { threshold: 0 }).observe(cartao);
   }
 
-  /* ---- 6. Ano do rodapé ---- */
+  /* ---- 7. Ano do rodapé ---- */
 
   const ano = document.getElementById("ano");
   if (ano) ano.textContent = new Date().getFullYear();
 
-  /* ---- 7. Pixel da Meta ----
+  /* ---- 8. Pixel da Meta ----
      Só liga se CONFIG.pixel estiver preenchido. Mede três coisas:
      quem chegou (PageView), quem clicou pra entrar no grupo (Lead) e
      quem clicou num produto da vitrine (ViewContent) — é assim que a
@@ -433,7 +456,7 @@ const PRODUTOS = [
     });
   }
 
-  /* ---- 8. Aviso no console se o link ainda for o placeholder ---- */
+  /* ---- 9. Aviso no console se o link ainda for o placeholder ---- */
 
   if (CONFIG.whatsapp.includes("COLE-O-CODIGO")) {
     console.warn(
