@@ -305,9 +305,14 @@ const PRODUTOS = [
 
     corpo.appendChild(por);
 
+    /* A setinha promete pra onde o toque leva. Enquanto o destino for o
+       grupo, ela nao pode dizer o nome da loja: seria mandar a pessoa
+       esperando a Shopee e entregar um convite de WhatsApp. */
     const loja = document.createElement("span");
     loja.className = "produto__loja";
-    loja.textContent = (item.loja || "ver na loja") + " →";
+    loja.textContent = paraOGrupo
+      ? "pegar no grupo →"
+      : (item.loja || "ver na loja") + " →";
     corpo.appendChild(loja);
 
     a.appendChild(corpo);
