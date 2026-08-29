@@ -1,566 +1,606 @@
 /* ==========================================================================
    Fiorella Promos — estilo
-   Paleta tirada direto da logo. Mobile-first: tudo é desenhado pro celular,
-   o desktop entra depois via media query.
+   Página de captação: uma tela, um objetivo, um botão.
+   Mobile-first — o desktop entra depois, na media query do fim.
    ========================================================================== */
 
 :root {
-  /* Cores da marca */
+  /* Cores da marca (tiradas da logo) */
   --rosa-fundo:   #FDDEE1;
-  --rosa-arco:    #FBC9CF;
   --rosa-forte:   #DE6A80;
   --rosa-escuro:  #C4556A;
-  --marrom:       #6E4C3D;
-  --marrom-claro: #8F6E5E;
-  --pessego:      #FBCE96;
+  --rosa-suave:   #FFF1F3;
+  --marrom:       #5A3E32;
+  --marrom-claro: #8A6A5C;
   --branco:       #FFFFFF;
-  --creme:        #FFF6F3;
 
-  /* Tipografia */
-  --serif: "Fraunces", Georgia, serif;
-  --sans:  "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Verde do WhatsApp. O botão é verde de propósito: a mulher reconhece
+     na hora pra onde vai, e isso tira o medo de clicar. */
+  --zap:          #22B15C;
+  --zap-escuro:   #1B9A4E;
 
-  /* Espaçamento */
-  --gap:     1rem;
-  --gap-lg:  2rem;
-  --radius:  20px;
-  --largura: 34rem;
+  /* Vermelho de urgência: mora na família do rosa da marca, mas é quente
+     o bastante pra não ser confundido com decoração. */
+  --urgente:        #C8283E;
+  --urgente-fundo:  #FDE8EB;
 
-  --sombra:      0 4px 20px rgba(110, 76, 61, .08);
-  --sombra-cta:  0 6px 18px rgba(222, 106, 128, .35);
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans:  "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* largura útil dentro do arco — deixa folga pra linha do arco respirar */
-  --dentro-arco: 19rem;
+  --raio:   24px;
+  --sombra: 0 10px 30px rgba(90, 62, 50, .10);
+  --largura: 30rem;
 }
 
 /* ---------- Reset ---------- */
-*,
-*::before,
-*::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
 
-body,
-h1, h2, h3,
-p, ul, li,
-figure { margin: 0; padding: 0; }
+body, h1, h2, h3, p, ul, ol, li,
+figure, figcaption, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
 
-ul { list-style: none; }
+img { max-width: 100%; height: auto; display: block; }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
+html { -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: var(--sans);
-  font-weight: 300;
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--marrom);
   background: var(--rosa-fundo);
   overflow-x: hidden;
-  /* espaço pra barra fixa não cobrir o rodapé */
-  padding-bottom: 5.5rem;
-}
-
-.container {
-  width: 100%;
-  max-width: var(--largura);
-  margin-inline: auto;
-  padding-inline: 1.5rem;
+  padding-bottom: 5.5rem;   /* espaço pra barra fixa não cobrir o rodapé */
 }
 
 /* ==========================================================================
-   HERO
+   FAIXA DO TOPO
    ========================================================================== */
 
-.hero {
-  position: relative;
+.topbar {
+  background: var(--rosa-forte);
+  color: var(--branco);
   text-align: center;
-  padding: 3rem 0 3.5rem;
-  overflow: hidden;
+  padding: .7rem 1rem;
+
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
-/* ---- A entrada: o arco da logo em escala de página ---- */
+/* ==========================================================================
+   CARTÃO PRINCIPAL — a dobra
+   ========================================================================== */
 
-.hero__arco {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  translate: -50% 0;
-  width: min(22rem, 92vw);
-  height: min(29rem, 126vw);
-  pointer-events: none;
+.cartao {
+  width: calc(100% - 2rem);
+  max-width: var(--largura);
+  margin: 1.25rem auto 0;
+  padding: 1.75rem 1.5rem 1.5rem;
+
+  background: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  text-align: center;
 }
 
-.hero__arco-linha {
-  position: absolute;
-  inset: 0;
-  border: 1.15px solid rgba(110, 76, 61, .14);
-  border-bottom: 0;
-  border-radius: 50% 50% 0 0 / 32% 32% 0 0;
-  background: linear-gradient(180deg, rgba(251, 201, 207, .55), rgba(251, 201, 207, 0) 78%);
-}
-
-/* o sol pêssego encostando no ombro do arco — igual na logo */
-.hero__sol {
-  position: absolute;
-  top: -1.4rem;
-  right: -1.6rem;
-  width: 8.5rem;
-  height: 8.5rem;
+.cartao__foto {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  background: var(--pessego);
-  opacity: .62;
-  mix-blend-mode: multiply;
+  object-fit: cover;
+  margin: 0 auto 1.25rem;
+  border: 4px solid var(--branco);
+  outline: 2px solid var(--rosa-forte);
+  outline-offset: 1px;
 }
 
-.hero__conteudo { position: relative; }
-
-.hero__logo {
-  width: 138px;
-  height: auto;
-  margin: 0 auto 1.6rem;
-  border-radius: 50%;
-  box-shadow: 0 6px 24px rgba(110, 76, 61, .1);
-}
-
-.hero__title {
+.cartao__titulo {
   font-family: var(--serif);
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-size: clamp(2rem, 8.2vw, 2.55rem);
-  line-height: 1.16;
-  letter-spacing: -.012em;
-  margin-bottom: 1rem;
-
-  /* equilibra as linhas sozinho, sem <br> na mão */
+  font-weight: 600;
+  font-size: clamp(1.75rem, 7.4vw, 2.15rem);
+  line-height: 1.15;
+  letter-spacing: -.015em;
   text-wrap: balance;
-
-  /* tudo que fica dentro do arco respeita a mesma largura */
-  max-width: min(15ch, var(--dentro-arco));
-  margin-inline: auto;
+  margin-bottom: .85rem;
 }
 
-.hero__title em {
-  font-style: italic;
+.cartao__titulo em {
+  font-style: normal;
   color: var(--rosa-forte);
 }
 
-.hero__subtitle {
+.cartao__texto {
+  font-size: 1.03rem;
+  color: var(--marrom-claro);
+  max-width: 24rem;
+  margin: 0 auto 1.5rem;
+  text-wrap: pretty;
+}
+
+/* Prova social embaixo do botão. Tem que apertar, não acariciar: selo com
+   fundo quente, número em destaque e um ponto vermelho pulsando. O que ele
+   anuncia é número real — a pressão vem do tamanho da letra, não da mentira. */
+.agora {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+
+  margin-top: .95rem;
+  padding: .4rem .85rem;
+  border-radius: 999px;
+
+  background: var(--urgente-fundo);
+  color: var(--urgente);
+  font-size: .93rem;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.agora strong {
+  font-weight: 700;
   font-size: 1.02rem;
-  color: var(--marrom-claro);
-  max-width: var(--dentro-arco);
-  margin: 0 auto 2rem;
 }
 
-.hero__note {
-  font-size: .82rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--marrom-claro);
-  max-width: var(--dentro-arco);
-  margin: 1rem auto 0;
+/* as frases do selo trocam sozinhas: some, troca escondida, volta */
+.agora__texto {
+  transition: opacity .26s ease;
 }
 
-/* o botão do hero também vive dentro do arco */
-.hero__conteudo .btn { max-width: var(--dentro-arco); }
+.agora__texto.is-saindo { opacity: 0; }
+
+.agora__ponto {
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: var(--urgente);
+  flex-shrink: 0;
+  animation: pisca 1.4s ease-in-out infinite;
+}
+
+@keyframes pisca {
+  0%, 100% { opacity: 1;  box-shadow: 0 0 0 0 rgba(200, 40, 62, .55); }
+  70%      { opacity: .6; box-shadow: 0 0 0 .4rem rgba(200, 40, 62, 0); }
+}
+
+.cartao__nota {
+  font-size: .8rem;
+  letter-spacing: .04em;
+  color: var(--marrom-claro);
+  margin-top: .35rem;
+}
 
 /* ==========================================================================
-   BOTÕES
+   BOTÃO
    ========================================================================== */
 
 .btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: .6rem;
+  gap: .65rem;
 
   width: 100%;
-  max-width: 21rem;
-  min-height: 3.6rem;          /* alvo de toque confortável no polegar */
-  padding: .9rem 1.5rem;
+  min-height: 3.75rem;         /* alvo confortável pro polegar */
+  padding: .9rem 1.25rem;
 
   font-family: var(--sans);
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: .02em;
+  font-size: 1.12rem;
+  font-weight: 600;
+  letter-spacing: .01em;
   text-decoration: none;
 
+  color: var(--branco);
+  background: var(--zap);
   border: 0;
   border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(34, 177, 92, .32);
   cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+
+  transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
+
+  /* O botão respira: cresce e encolhe de leve, sem parar. É o único movimento
+     da página, então ele sozinho carrega o peso de puxar o olho. */
+  animation: respira 2.6s ease-in-out 1.2s infinite;
 }
 
-.btn--primary {
-  background: var(--rosa-forte);
-  color: var(--branco);
-  box-shadow: var(--sombra-cta);
+@keyframes respira {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 16px rgba(34, 177, 92, .32);
+  }
+  50% {
+    transform: scale(1.035);
+    box-shadow: 0 10px 26px rgba(34, 177, 92, .5);
+  }
 }
 
-.btn--primary:hover,
-.btn--primary:focus-visible {
-  background: var(--rosa-escuro);
+/* No dedo ou no mouse a respiração para e o botão responde ao toque.
+   Tem que ser `animation: none` — animação pausada continua mandando no
+   transform e o botão ficaria sem reação nenhuma. */
+.btn:hover,
+.btn:focus-visible {
+  animation: none;
+  background: var(--zap-escuro);
   transform: translateY(-2px);
 }
 
-.btn--primary:active { transform: translateY(0); }
+.btn:active {
+  animation: none;
+  transform: scale(.985);
+}
 
-/* bolinha branca segurando o ícone verde do WhatsApp */
-.btn__icon {
+.btn__icone {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--branco);
   flex-shrink: 0;
+  color: var(--branco);
 }
 
 /* ==========================================================================
-   ATALHOS
+   LOJAS — confiança emprestada, logo abaixo do botão
    ========================================================================== */
 
-.quicklinks { padding-bottom: 1rem; }
+.lojas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
 
-.quicklinks__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: .75rem;
+  margin: 1.4rem 0 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(90, 62, 50, .1);
 }
 
-.quicklink {
+.lojas img {
+  height: 22px;
+  width: auto;
+  opacity: .85;
+}
+
+/* ==========================================================================
+   BLOCO "É CONFIÁVEL?"
+   ========================================================================== */
+
+.confianca {
+  text-align: left;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--marrom-claro);
+
+  background: var(--rosa-suave);
+  border-left: 4px solid var(--rosa-forte);
+  border-radius: 0 12px 12px 0;
+  padding: .9rem 1rem;
+}
+
+.confianca strong { color: var(--marrom); }
+
+/* ==========================================================================
+   VITRINE ROTATÓRIA
+   Sai das margens de propósito: a esteira precisa "sangrar" pra parecer
+   que continua fora da tela.
+   ========================================================================== */
+
+.vitrine { margin: 2.5rem 0 0; }
+
+.vitrine__titulo {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: .2rem;
+}
+
+.vitrine__lead,
+.vitrine__aviso {
+  text-align: center;
+  font-size: .82rem;
+  color: var(--marrom-claro);
+}
+
+.vitrine__lead  { margin-bottom: 1rem; }
+.vitrine__aviso { margin-top: .9rem; }
+
+.vitrine__janela {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vitrine__janela::-webkit-scrollbar { display: none; }
+
+.vitrine__trilho {
+  display: flex;
+  gap: .75rem;
+  padding: .25rem 1rem;
+  width: max-content;
+}
+
+.produto {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: .35rem;
+  width: 9.5rem;
+  flex-shrink: 0;
 
-  padding: 1rem .5rem;
   background: var(--branco);
-  border-radius: var(--radius);
+  border-radius: 16px;
   box-shadow: var(--sombra);
-
+  overflow: hidden;
   text-decoration: none;
   color: var(--marrom);
+
   transition: transform .18s ease;
 }
 
-.quicklink:hover,
-.quicklink:focus-visible { transform: translateY(-3px); }
+.produto:hover,
+.produto:focus-visible { transform: translateY(-3px); }
 
-.quicklink__emoji { font-size: 1.5rem; line-height: 1; }
+.produto__moldura { position: relative; }
 
-.quicklink__label {
-  font-size: .8rem;
+.produto__foto {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--rosa-suave);
+}
+
+.produto__selo {
+  position: absolute;
+  top: .45rem;
+  left: .45rem;
+
+  background: var(--rosa-forte);
+  color: var(--branco);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding: .1rem .45rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(90, 62, 50, .18);
+}
+
+.produto__corpo {
+  padding: .6rem .7rem .75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  flex: 1;
+}
+
+.produto__nome {
+  font-size: .85rem;
   font-weight: 500;
+  line-height: 1.3;
+
+  /* no máximo duas linhas, pra todos os cards ficarem do mesmo tamanho */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.produto__de {
+  font-size: .75rem;
+  color: var(--marrom-claro);
+  text-decoration: line-through;
+}
+
+.produto__por {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--rosa-forte);
+  line-height: 1.2;
+}
+
+.produto__obs {
+  font-size: .72rem;
+  font-weight: 400;
+  color: var(--marrom-claro);
+}
+
+.produto__loja {
+  margin-top: auto;
+  padding-top: .35rem;
+  font-size: .65rem;
   letter-spacing: .04em;
   text-transform: uppercase;
+  color: var(--marrom-claro);
+
+  /* nome de loja comprido não pode quebrar linha e desalinhar os cards */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ==========================================================================
-   SEÇÕES
+   COMO FUNCIONA
    ========================================================================== */
 
-.section { padding: 3rem 0; }
-
-.section--tint {
-  background: var(--creme);
-  border-radius: 36px 36px 0 0;
+.passos {
+  width: calc(100% - 2rem);
+  max-width: var(--largura);
+  margin: 2.5rem auto 0;
 }
 
-.eyebrow {
-  text-align: center;
-  font-size: .75rem;
-  font-weight: 500;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--rosa-forte);
-  margin-bottom: .5rem;
-}
-
-.section__title {
+.passos__titulo {
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(1.65rem, 6.5vw, 2.1rem);
-  line-height: 1.25;
+  font-weight: 600;
+  font-size: 1.5rem;
   text-align: center;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 
-.section__lead {
-  text-align: center;
-  color: var(--marrom-claro);
-  max-width: 26rem;
-  margin: -.75rem auto 2rem;
-}
-
-/* ---------- Cards de benefício ---------- */
-
-.cards {
+.passos__lista {
   display: grid;
-  gap: 1rem;
-}
-
-.card {
-  background: var(--branco);
-  border-radius: var(--radius);
-  padding: 1.6rem 1.4rem;
-  box-shadow: var(--sombra);
-}
-
-.card__emoji {
-  display: block;
-  font-size: 1.9rem;
-  line-height: 1;
-  margin-bottom: .75rem;
-}
-
-.card__title {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 1.3rem;
-  line-height: 1.3;
-  margin-bottom: .4rem;
-}
-
-.card__text {
-  font-size: .95rem;
-  color: var(--marrom-claro);
-}
-
-/* ---------- Lojas ---------- */
-
-.stores {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: .7rem;
-}
-
-.store {
-  display: inline-flex;
-  align-items: center;
-  padding: .7rem 1.35rem;
-  border-radius: 999px;
-  background: var(--branco);
-  box-shadow: var(--sombra);
-}
-
-/* Cinza quente por padrão, cor real ao tocar/passar o mouse */
-.store__logo {
-  width: auto;
-  filter: grayscale(1) sepia(.4) brightness(.82);
-  opacity: .55;
-  transition: filter .35s ease, opacity .35s ease;
-}
-
-.store:hover .store__logo,
-.store:active .store__logo,
-.store:focus-within .store__logo {
-  filter: none;
-  opacity: 1;
-}
-
-/* alturas ajustadas pra ficarem opticamente do mesmo tamanho */
-.store__logo--shopee { height: 26px; }
-.store__logo--ml     { height: 22px; }
-.store__logo--amazon { height: 20px; }
-
-/* ---------- Prova social ---------- */
-
-.proofs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: .75rem;
 }
 
-.proofs img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
+.passos__lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+
+  background: var(--branco);
   border-radius: 16px;
+  padding: 1rem 1.1rem;
   box-shadow: var(--sombra);
 }
 
+.passos__num {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--rosa-suave);
+  color: var(--rosa-forte);
+
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.passos__lista h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: .1rem;
+}
+
+.passos__lista p {
+  font-size: .9rem;
+  color: var(--marrom-claro);
+  line-height: 1.5;
+}
+
 /* ==========================================================================
-   CTA FINAL
+   FECHAMENTO
    ========================================================================== */
 
-.finalcta {
-  background: var(--rosa-arco);
+.fechamento {
+  width: calc(100% - 2rem);
+  max-width: var(--largura);
+  margin: 2.5rem auto 0;
+  padding: 1.75rem 1.5rem;
+
+  background: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
   text-align: center;
-  padding: 3.25rem 0;
 }
 
-.finalcta__flower {
-  display: block;
-  font-size: 2rem;
-  margin-bottom: .5rem;
-}
-
-.finalcta__title {
+.fechamento__titulo {
   font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(1.7rem, 7vw, 2.2rem);
-  margin-bottom: .6rem;
-}
-
-.finalcta__text {
-  color: var(--marrom);
-  max-width: 22rem;
-  margin: 0 auto 1.75rem;
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 1.1rem;
 }
 
 /* ==========================================================================
    RODAPÉ
    ========================================================================== */
 
-.footer {
-  background: var(--rosa-fundo);
+.rodape {
+  width: calc(100% - 2rem);
+  max-width: var(--largura);
+  margin: 2.5rem auto 0;
+  padding-bottom: 1.5rem;
   text-align: center;
-  padding: 2.75rem 0 2rem;
 }
 
-.footer__brand {
+.rodape__marca {
   font-family: var(--serif);
-  font-size: 1.5rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+  font-size: 1.15rem;
+  font-weight: 600;
 }
 
-.footer__tagline {
-  font-size: .78rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--marrom-claro);
-  margin-bottom: 1.25rem;
-}
+.rodape__social { margin: .35rem 0 1rem; }
 
-.footer__social { margin-bottom: 1.5rem; }
-
-.footer__social a {
+.rodape__social a {
   color: var(--rosa-forte);
-  font-weight: 500;
+  font-size: .95rem;
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(222, 106, 128, .4);
 }
 
-.footer__disclaimer {
+.rodape__aviso {
   font-size: .78rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--marrom-claro);
-  max-width: 27rem;
-  margin: 0 auto 1.5rem;
+  max-width: 26rem;
+  margin: 0 auto;
 }
 
-.footer__copy {
-  font-size: .78rem;
+.rodape__copy {
+  font-size: .75rem;
   color: var(--marrom-claro);
+  margin-top: .9rem;
 }
 
 /* ==========================================================================
-   BARRA FIXA — só aparece depois que o hero sai da tela
+   BARRA FIXA (celular) — o botão sempre à mão depois que a dobra sai
    ========================================================================== */
 
-.stickybar {
+.barrafixa {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 50;
+  z-index: 20;
 
-  padding: .7rem 1.5rem calc(.7rem + env(safe-area-inset-bottom));
+  padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom));
   background: rgba(253, 222, 225, .92);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(110, 76, 61, .08);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(90, 62, 50, .08);
 
-  display: flex;
-  justify-content: center;
-
-  transform: translateY(110%);
-  transition: transform .28s ease;
+  transform: translateY(120%);
+  transition: transform .25s ease;
 }
 
-.stickybar.is-visible { transform: translateY(0); }
+.barrafixa.is-visible { transform: translateY(0); }
 
-.btn--sticky {
-  min-height: 3.2rem;
-  font-size: 1rem;
-}
-
-/* ==========================================================================
-   Animação de entrada
-   ========================================================================== */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .55s ease, transform .55s ease;
-}
-
-.reveal.is-in {
-  opacity: 1;
-  transform: none;
+.btn--barra {
+  min-height: 3.4rem;
+  font-size: 1.05rem;
+  max-width: var(--largura);
+  margin-inline: auto;
+  animation: none;
 }
 
 /* ==========================================================================
-   Acessibilidade
+   PREFERÊNCIA POR MENOS MOVIMENTO
    ========================================================================== */
-
-:focus-visible {
-  outline: 3px solid var(--rosa-forte);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-
-  *,
-  *::before,
-  *::after {
+  * {
     animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
   }
-
-  .reveal { opacity: 1; transform: none; }
 }
 
 /* ==========================================================================
-   DESKTOP — a partir daqui o layout se espalha
+   DESKTOP
    ========================================================================== */
 
 @media (min-width: 48rem) {
-  :root {
-    --largura: 60rem;
-    --dentro-arco: 25rem;
-  }
+  body { padding-bottom: 3rem; }
 
-  body { padding-bottom: 0; }
+  .cartao { padding: 2.25rem 2.25rem 1.75rem; }
 
-  .hero { padding: 5rem 0 4rem; }
-  .hero__logo { width: 160px; }
-  .hero__title { font-size: 2.9rem; max-width: var(--dentro-arco); }
-  .hero__subtitle { font-size: 1.1rem; }
+  .cartao__foto { width: 168px; height: 168px; }
 
-  .hero__arco { width: 29rem; height: 38rem; top: 3rem; }
-  .hero__sol { width: 12rem; height: 12rem; top: -2.5rem; right: -3.5rem; }
+  .vitrine__trilho { padding-inline: max(1rem, calc((100vw - 64rem) / 2)); }
 
-  .quicklinks__grid { max-width: 34rem; margin-inline: auto; }
+  .produto { width: 11rem; }
 
-  .section { padding: 4.5rem 0; }
-
-  .cards { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
-
-  .proofs { grid-template-columns: repeat(4, 1fr); }
-
-  /* no desktop o botão fixo não faz sentido */
-  .stickybar { display: none; }
+  .barrafixa { display: none; }
 }

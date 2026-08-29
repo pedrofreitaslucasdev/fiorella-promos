@@ -34,8 +34,8 @@ const CONFIG = {
 };
 ```
 
-Esse é o **único** lugar do projeto com o link. Os quatro botões da página
-(hero, atalho, CTA final e barra fixa do celular) são preenchidos a partir dele.
+Esse é o **único** lugar do projeto com o link. Os três botões da página
+(dobra, fechamento e barra fixa do celular) são preenchidos a partir dele.
 
 Depois de editar, publique:
 
@@ -50,19 +50,40 @@ sozinho**. Não é preciso rodar nada da Vercel na mão.
 
 ---
 
-## Ativar a seção de prova social
+## Ligar a vitrine de achadinhos
 
-A seção "Quem já aproveitou" fica escondida enquanto não houver prints reais.
-Para ligá-la, salve as imagens em `assets/` e preencha a lista em `js/main.js`:
+A esteira de produtos fica **escondida** enquanto a lista estiver vazia. Para
+ligá-la, salve as fotos em `assets/produtos/` e preencha `PRODUTOS` em
+`js/main.js`:
 
 ```js
-const DEPOIMENTOS = [
-  { img: "assets/print-1.jpg", alt: "Cliente mostrando o secador que comprou" },
-  { img: "assets/print-2.jpg", alt: "Print da promoção de perfume aproveitada" },
+const PRODUTOS = [
+  {
+    nome:     "Secador de cabelo Mondial 2000W",
+    foto:     "assets/produtos/secador.jpg",
+    por:      "R$ 89,90",     // o preço que aparece na loja
+    obs:      "no Pix",       // só quando o preço for de Pix
+    desconto: "-46%",         // o selo, igual ao da loja
+    loja:     "Shopee",
+    link:     "https://s.shopee.com.br/xxxxx"
+  },
 ];
 ```
 
-A seção aparece sozinha assim que a lista tiver pelo menos um item.
+A Shopee mostra o desconto em selo e **não** mostra o preço cheio riscado, então
+a vitrine segue o mesmo padrão: preço atual + selo. Se a loja mostrar o preço
+cheio, dá pra passar `de: "R$ 189,90"` que ele aparece riscado.
+
+Três regras que evitam dor de cabeça:
+
+- a foto precisa ser **quadrada** — o site corta em quadrado de qualquer jeito;
+- **baixe** a imagem do anúncio e salve em `assets/produtos/`. Link direto pra
+  imagem da Shopee não funciona: ela bloqueia e a foto some do site;
+- **oferta vencida sai da lista.** Vitrine com preço velho derruba a confiança
+  mais rápido do que vitrine vazia.
+
+Cada clique num produto vira um evento `ViewContent` no pixel — é assim que dá
+pra saber se a vitrine está ajudando ou tirando gente do botão do grupo.
 
 ---
 
@@ -73,7 +94,9 @@ fiorella-promos/
 ├── index.html          # a página inteira
 ├── css/style.css       # estilos (mobile-first)
 ├── js/main.js          # ⚙️ configuração + comportamento
-├── assets/logo.jpg     # logo da marca
+├── assets/logo.jpg     # logo da marca (favicon e compartilhamento)
+├── assets/foto-hero.jpg # o rosto da dobra
+├── assets/produtos/    # fotos da vitrine (você cria)
 └── README.md
 ```
 
@@ -83,29 +106,36 @@ Sem framework, sem build, sem dependência. É HTML, CSS e JavaScript puro.
 
 ## Design
 
-Mobile-first de verdade — quase todo o público acessa pelo celular, então o
-layout é desenhado para a tela pequena e o desktop se adapta depois.
+Mobile-first de verdade — quase todo o público chega pelo celular vindo de
+anúncio, então o layout é desenhado para a tela pequena e o desktop se adapta.
 
-**O arco é a assinatura.** A logo da Fiorella tem um arco rosa com um círculo
-pêssego encostando no ombro direito. O hero reencena essa composição em escala
-de página: um arco de traço fino com o sol atrás. Tudo que vive dentro dele
-(título, subtítulo, botão e a nota) respeita a variável `--dentro-arco`, para
-nada encostar na linha.
+**A página inteira defende uma decisão só:** entrar no grupo. Por isso ela é
+um cartão branco centralizado, sem menu, sem link pra fora e sem segunda porta.
+Tudo que a visitante precisa pra decidir cabe na primeira tela: rosto, promessa,
+botão, as lojas de onde vêm as ofertas e a resposta pra pergunta que ela faz
+sozinha ("isso é confiável?").
 
-Paleta tirada direto dos pixels da logo:
+**O botão é verde, não rosa.** Verde de WhatsApp é reconhecido antes de ser
+lido: a pessoa sabe pra onde vai antes de encostar o dedo. É a única cor da
+página que não vem da marca, e é de propósito.
+
+Paleta:
 
 | Cor | Hex | Uso |
 |---|---|---|
 | Rosa fundo | `#FDDEE1` | fundo da página |
-| Rosa arco | `#FBC9CF` | blocos e cards |
-| Rosa forte | `#DE6A80` | botões e destaques |
-| Marrom taupe | `#6E4C3D` | textos e títulos |
-| Pêssego | `#FBCE96` | o sol, acentos |
+| Rosa suave | `#FFF1F3` | bloco de confiança, número dos passos |
+| Rosa forte | `#DE6A80` | faixa do topo, destaques, preço |
+| Marrom | `#5A3E32` | títulos e texto |
+| Verde WhatsApp | `#22B15C` | o botão, e só ele |
 
-Tipografia: **Fraunces** (títulos) + **Jost** (corpo).
+Tipografia: **Fraunces** (títulos) + **Jost** (corpo), carregadas fora do
+caminho crítico — a página pinta com a fonte do sistema e troca depois, em vez
+de segurar a tela em branco esperando o Google responder.
 
-Os logos das lojas ficam em cinza quente por padrão e voltam à cor original
-ao toque — assim as marcas são reconhecíveis sem quebrar a paleta.
+A foto da dobra é uma imagem gerada, usada como rosto da marca. Se um dia
+houver uma foto real de quem toca o canal, é só trocar `assets/foto-hero.jpg`:
+ela vale mais que qualquer imagem gerada.
 
 ---
 
