@@ -50,22 +50,6 @@ sozinho**. Não é preciso rodar nada da Vercel na mão.
 
 ---
 
-## Trocar o número de mulheres no grupo
-
-Embaixo do botão do hero aparece **"25 mulheres já entraram no grupo"**. Esse
-número também mora no `CONFIG` de `js/main.js`:
-
-```js
-const CONFIG = {
-  membros: 25,
-};
-```
-
-Atualize conforme o grupo cresce — é o que mostra pra visitante que já tem
-gente dentro. Se colocar `0`, a linha some da página.
-
----
-
 ## Ativar a seção de prova social
 
 A seção "Quem já aproveitou" fica escondida enquanto não houver prints reais.
