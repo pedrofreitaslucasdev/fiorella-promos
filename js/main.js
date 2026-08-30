@@ -126,6 +126,20 @@ const PRODUTOS = [
     link: "https://s.shopee.com.br/30nXvtztzs"
   },
   {
+    nome: "Mesa de jantar de vidro + 4 cadeiras",
+    foto: "assets/produtos/mesa-jantar.jpg",
+    por:  "R$ 684,77",
+    loja: "Shopee",
+    link: "https://s.shopee.com.br/112NNTxbzr"
+  },
+  {
+    nome: "Penteadeira de canto com vidros de correr",
+    foto: "assets/produtos/penteadeira.jpg",
+    por:  "R$ 502,90",
+    loja: "Shopee",
+    link: "https://s.shopee.com.br/8fRoat77Ei"
+  },
+  {
     nome: "Jogo de travessas 3 peças",
     foto: "assets/produtos/travessas.jpg",
     por:  "R$ 39,99",
@@ -134,12 +148,33 @@ const PRODUTOS = [
     link: "https://s.shopee.com.br/3B6xGhFFaL"
   },
   {
+    nome: "Kit 4 potes herméticos com tampa de bambu",
+    foto: "assets/produtos/potes-hermeticos.jpg",
+    por:  "R$ 39,99",
+    loja: "Shopee",
+    link: "https://s.shopee.com.br/6VNMtZWwuw"
+  },
+  {
+    nome: "Air fryer 3,5 litros 1400W",
+    foto: "assets/produtos/air-fryer.jpg",
+    por:  "R$ 188,90",
+    loja: "Shopee",
+    link: "https://s.shopee.com.br/40g3iq3dqQ"
+  },
+  {
     nome: "Vestido longo estampado com bojo",
     foto: "assets/produtos/vestido.jpg",
     por:  "R$ 79,92",
     desconto: "-46%",
     loja: "Shopee",
     link: "https://s.shopee.com.br/1gIAs7wP6y"
+  },
+  {
+    nome: "Blusa de amarração costas nuas",
+    foto: "assets/produtos/blusa.jpg",
+    por:  "R$ 31,95",
+    loja: "Shopee",
+    link: "https://s.shopee.com.br/2LXq4gj63s"
   },
   {
     nome: "Massageador de pescoço e ombros 3D",
@@ -361,7 +396,7 @@ const PRODUTOS = [
     if (!semMovimento) {
       let parada = 0;                 // enquanto for > 0, a esteira fica parada
       let pos = 0;                    // posição de verdade, em fração de pixel
-      const passo = 0.45;             // pixels por quadro (~27px/s)
+      const passo = 0.7;              // pixels por quadro (~42px/s)
 
       /* A conta é feita aqui e só o resultado vai pro scrollLeft. Se a gente
          somasse direto no scrollLeft, o navegador arredondaria 0,45 pra zero
