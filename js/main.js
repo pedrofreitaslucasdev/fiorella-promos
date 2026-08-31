@@ -489,6 +489,42 @@ const PRODUTOS = [
 
       fbq("track", "ViewContent", { content_name: card.dataset.produto || "" });
     });
+
+    /* ---- Ate onde ela desce a pagina ----
+       Existe pra responder UMA pergunta: quem nao clica, desiste na dobra
+       ou desiste depois de ver as ofertas? Sem isto o pixel so diz que ela
+       nao clicou, nunca por que — e a gente fica escolhendo conserto no
+       chute.
+
+       Sao eventos CUSTOMIZADOS (trackCustom), nunca padrao. Evento padrao e
+       o que a campanha otimiza: criar um novo jogaria os conjuntos de volta
+       pra aprendizagem e queimaria orcamento. Estes aqui so olham.
+
+       O funil que sai no Gerenciador de Eventos:
+         PageView ..... chegou na pagina
+         ViuVitrine ... rolou e viu produto com preco na tela
+         ViuFinal ..... chegou no fim da pagina
+         Lead ......... clicou pra entrar no grupo
+
+       Como ler: se ViuVitrine for perto de PageView, ela ve tudo e mesmo
+       assim nao entra — o problema e o pedido, nao a pagina. Se ViuVitrine
+       for muito menor, ela desiste sem nunca ver um preco — o problema e a
+       dobra. */
+
+    if ("IntersectionObserver" in window) {
+      [["#vitrine", "ViuVitrine"], [".fechamento", "ViuFinal"]].forEach(function (par) {
+        const alvo = document.querySelector(par[0]);
+        if (!alvo || alvo.hasAttribute("hidden")) return;
+
+        const olho = new IntersectionObserver(function (entradas) {
+          if (!entradas[0].isIntersecting) return;
+          fbq("trackCustom", par[1]);
+          olho.disconnect();   /* uma vez por visita, nao a cada rolagem */
+        }, { threshold: 0.5 });
+
+        olho.observe(alvo);
+      });
+    }
   }
 
   /* ---- 9. Aviso no console se o link ainda for o placeholder ---- */
