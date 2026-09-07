@@ -32,10 +32,6 @@ const CONFIG = {
   // Onde achar: Gerenciador de Eventos > o conjunto de dados > o numero
   // embaixo do nome. So o numero. Deixe "" para o site nao rastrear ninguem.
   //
-  // 🔴 TROQUE AQUI: numero do pixel da Meta, usado para medir os anuncios.
-  // Onde achar: Gerenciador de Eventos > o conjunto de dados > o numero
-  // embaixo do nome. So o numero. Deixe "" para o site nao rastrear ninguem.
-  //
   // Esta e a pagina OFICIAL, a que as campanhas apontam. A copia que mora em
   // fiorella-teste.vercel.app fica com "" de proposito — de 02/09 a 07/09/2026
   // os dois subiram com este mesmo numero e ficaram escrevendo no mesmo
@@ -59,22 +55,22 @@ const CONFIG = {
    -------------------------------------------------------------------------- */
 
 const GRUPO = {
-  vagasRestantes: 11,
+  vagasRestantes: 37,
   minimoDeVagas: 1,
 
   // De quanto em quanto tempo aparece um nome — e, junto com ele, cai uma
   // vaga. Os dois andam colados de propósito: é ver a Larissa entrar e o
   // número descer na mesma hora que dá o aperto.
   //
-  // O que mudou foi só o RELÓGIO. Antes o nome vinha a cada 5-8 segundos, e
-  // como cada nome derrubava uma vaga, as onze viravam uma em um minuto e o
-  // contador passava o resto da visita travado em "1 vaga". Neste ritmo o
-  // par nome+vaga dura a visita inteira.
+  // Em segundos. Iguais = ritmo cravado; diferentes = sorteia entre os dois,
+  // que fica com cara menos de robô.
   //
-  // Quiser nome mais de perto? Sobe o vagasRestantes junto: com 11 vagas e
-  // nome a cada 6s, não tem conta que feche.
-  quedaMin: 45,
-  quedaMax: 90,
+  // A CONTA QUE IMPORTA: cada nome derruba uma vaga, então o contador dura
+  // (vagasRestantes − minimoDeVagas) × queda. Com 37 vagas e 4s, são 36
+  // quedas = 2min24s até travar em "1 vaga". Depois disso os nomes continuam
+  // aparecendo, só que o número para. Pra durar mais, sobe vagasRestantes.
+  quedaMin: 4,
+  quedaMax: 4,
 
   // O que o selo mostra quando não houver vagas (vagasRestantes: 0): estas frases
   // se revezam sozinhas, com o pontinho
@@ -299,17 +295,39 @@ const PRODUTOS = [
   const memberToastName = document.getElementById("member-toast-name");
 
   if (memberToast && memberToastName && PARTICIPANTES.length) {
-    let anterior = -1;
+    let anterior = "";
+    let sumir = 0;
+    let sacola = [];
 
-    const mostrarParticipante = function () {
-      let indice = Math.floor(Math.random() * PARTICIPANTES.length);
+    /* Sorteio por sacola: tira nome de dentro sem repor, e só reembaralha
+       quando a sacola esvazia. Assim todo mundo da lista aparece uma vez
+       antes de qualquer um repetir. Com sorteio solto, num ritmo de 4s a
+       mesma mulher voltava em poucos segundos e a lista entregava que é
+       curta. */
+    const proximoNome = function () {
+      if (!sacola.length) {
+        sacola = PARTICIPANTES.slice();
 
-      if (PARTICIPANTES.length > 1 && indice === anterior) {
-        indice = (indice + 1) % PARTICIPANTES.length;
+        for (let i = sacola.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const troca = sacola[i];
+          sacola[i] = sacola[j];
+          sacola[j] = troca;
+        }
+
+        /* Emenda de uma sacola pra outra: se a nova começa com o nome que
+           acabou de sair, ele vai pro fim — senão repete coladinho. */
+        if (sacola.length > 1 && sacola[0] === anterior) sacola.push(sacola.shift());
       }
 
-      anterior = indice;
-      memberToastName.textContent = PARTICIPANTES[indice];
+      return sacola.shift();
+    };
+
+    const mostrarParticipante = function () {
+      const espera = proximaEspera();
+
+      anterior = proximoNome();
+      memberToastName.textContent = anterior;
       memberToast.hidden = false;
 
       /* O nome e a vaga caem JUNTOS — é o par que faz a coisa funcionar.
@@ -321,15 +339,24 @@ const PRODUTOS = [
         atualizarVagas();
       }
 
+      window.clearTimeout(sumir);
+
       requestAnimationFrame(function () {
         memberToast.classList.add("show");
       });
 
-      window.setTimeout(function () {
-        memberToast.classList.remove("show");
-      }, 4500);
+      /* O aviso PRECISA sair antes de o próximo entrar. Ele ficava 4,5s fixos
+         na tela: com nome a cada 4s, o relógio do aviso velho disparava meio
+         segundo depois de o novo aparecer e apagava o nome novo na cara da
+         pessoa. Agora o tempo de tela acompanha o ritmo e sempre sobra um
+         respiro de 0,8s entre um nome e o outro. */
+      const tempoNaTela = Math.max(1200, Math.min(4500, espera - 800));
 
-      window.setTimeout(mostrarParticipante, proximaEspera());
+      sumir = window.setTimeout(function () {
+        memberToast.classList.remove("show");
+      }, tempoNaTela);
+
+      window.setTimeout(mostrarParticipante, espera);
     };
 
     window.setTimeout(mostrarParticipante, 1500);
