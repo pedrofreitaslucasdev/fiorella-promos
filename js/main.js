@@ -41,36 +41,31 @@ const CONFIG = {
 
 
 /* --------------------------------------------------------------------------
-   PROVA SOCIAL — quantas mulheres entraram no grupo.
+   URGÊNCIA — quantas vagas ainda restam no grupo.
 
-   Aparece embaixo do botão, com o pontinho verde. O número tem que ser o
-   de verdade: é isso que separa essa linha do "Fulana entrou agora" que os
-   concorrentes inventam.
+   Aparece embaixo do botão, com o pontinho verde. Atualize o número sempre
+   que a quantidade de vagas disponíveis mudar.
 
-   · entraram ......... quantas entraram no período. 0 esconde a linha.
-   · periodo .......... o recorte de tempo, escrito como entra na frase:
-                        "em 4 dias", "só hoje", "esta semana". Curto
-                        cabe numa linha só — comprido quebra o selo em duas.
-                        Quanto mais específico, mais aperta. Não use
-                        "na última hora": o número fica parado e a frase
-                        vira mentira em 60 minutos.
-   · atualizadoEm ..... a data em que você contou (ANO-MES-DIA).
-   · validadePorDias .. depois disso o número SAI de cena sozinho. É de
-                        propósito: número velho esquecido no ar é mentira que
-                        ninguém percebeu que virou mentira.
+   · vagasRestantes ... quantidade mostrada quando a página abre.
+   · minimoDeVagas .... limite até onde o contador pode descer.
    · frases ........... as frases que se revezam no selo quando não há número
                         pra mostrar. Sem elas o espaço embaixo do botão fica
                         vazio.
    -------------------------------------------------------------------------- */
 
 const GRUPO = {
-  entraram: 0,
-  periodo: "em 4 dias",
-  atualizadoEm: "2026-08-29",
-  validadePorDias: 7,
+  vagasRestantes: 11,
+  minimoDeVagas: 1,
 
-  // O que o selo mostra ENQUANTO não houver número (entraram: 0) ou depois
-  // que a contagem vencer: estas frases se revezam sozinhas, com o pontinho
+  // De quanto em quanto tempo cai uma vaga, em segundos (sorteia entre os
+  // dois). Antes a vaga caía junto com o aviso de participante: as dez vagas
+  // sumiam em 60 segundos e o número travava em 1 na cara de quem continuasse
+  // lendo. Nesse ritmo o contador dura o tempo de uma visita inteira.
+  quedaMin: 45,
+  quedaMax: 90,
+
+  // O que o selo mostra quando não houver vagas (vagasRestantes: 0): estas frases
+  // se revezam sozinhas, com o pontinho
   // piscando do lado. Nenhuma promete quantidade, então nenhuma vira mentira
   // parada no ar — e o espaço embaixo do botão nunca fica vazio.
   // Curtas (até ~28 letras) pra caber numa linha só. Lista vazia esconde o selo.
@@ -81,6 +76,28 @@ const GRUPO = {
     "Só lojas oficiais",
   ],
 };
+
+
+/* --------------------------------------------------------------------------
+   PARTICIPANTES — use aqui somente nomes autorizados.
+
+   Mantenha abaixo apenas a lista aprovada. Se ela ficar vazia, o aviso não
+   aparece.
+   -------------------------------------------------------------------------- */
+
+const PARTICIPANTES = [
+  "Mariana",
+  "Camila",
+  "Juliana",
+  "Beatriz",
+  "Larissa",
+  "Amanda",
+  "Isabela",
+  "Fernanda",
+  "Vitória",
+  "Letícia",
+  "Gabriela",
+];
 
 
 /* --------------------------------------------------------------------------
@@ -206,6 +223,91 @@ const PRODUTOS = [
 
   const semMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const prova = document.getElementById("prova");
+  const provaTexto = document.getElementById("prova-texto");
+  const provaRotulo = document.getElementById("prova-rotulo");
+  const provaLegenda = document.getElementById("prova-legenda");
+
+  /* O número fica guardado no aparelho junto com o dia de hoje. Sem isso ele
+     voltava pro cheio a cada F5 — quem recarregasse via as vagas ressuscitarem
+     na frente dela. Guardado, a contagem continua de onde parou, e vira um dia
+     novo sozinha quando a data muda. */
+  const CHAVE_VAGAS = "fiorella:vagas";
+  const hoje = new Date().toISOString().slice(0, 10);
+  const vagasCheio = Math.max(0, Number(GRUPO.vagasRestantes) || 0);
+
+  let vagas = (function () {
+    try {
+      const salvo = JSON.parse(window.localStorage.getItem(CHAVE_VAGAS) || "null");
+      if (salvo && salvo.dia === hoje && typeof salvo.vagas === "number") {
+        return Math.min(vagasCheio, Math.max(0, salvo.vagas));
+      }
+    } catch (e) {
+      /* aba anônima ou armazenamento bloqueado: só não guarda, nada quebra */
+    }
+    return vagasCheio;
+  })();
+
+  const guardarVagas = function () {
+    try {
+      window.localStorage.setItem(
+        CHAVE_VAGAS,
+        JSON.stringify({ dia: hoje, vagas: vagas })
+      );
+    } catch (e) { /* idem: sem armazenamento, o contador só não sobrevive ao F5 */ }
+  };
+
+  const atualizarVagas = function () {
+    if (!prova || !provaTexto || vagas <= 0) return;
+
+    prova.classList.remove("agora--frase");
+    if (provaRotulo) provaRotulo.hidden = false;
+    if (provaLegenda) {
+      provaLegenda.hidden = false;
+      provaLegenda.textContent = vagas === 1
+        ? "vaga disponível hoje"
+        : "vagas disponíveis hoje";
+    }
+    provaTexto.textContent = String(vagas);
+    prova.hidden = false;
+  };
+
+  /* ---- Participante autorizada: aparece no canto inferior da tela ---- */
+
+  const memberToast = document.getElementById("member-toast");
+  const memberToastName = document.getElementById("member-toast-name");
+
+  if (memberToast && memberToastName && PARTICIPANTES.length) {
+    let anterior = -1;
+
+    const mostrarParticipante = function () {
+      let indice = Math.floor(Math.random() * PARTICIPANTES.length);
+
+      if (PARTICIPANTES.length > 1 && indice === anterior) {
+        indice = (indice + 1) % PARTICIPANTES.length;
+      }
+
+      anterior = indice;
+      memberToastName.textContent = PARTICIPANTES[indice];
+      memberToast.hidden = false;
+
+      requestAnimationFrame(function () {
+        memberToast.classList.add("show");
+      });
+
+      window.setTimeout(function () {
+        memberToast.classList.remove("show");
+      }, 4500);
+
+      window.setTimeout(
+        mostrarParticipante,
+        Math.floor(Math.random() * 3000) + 5000
+      );
+    };
+
+    window.setTimeout(mostrarParticipante, 1500);
+  }
+
   /* ---- 1. Preenche todos os links da página a partir do CONFIG ---- */
 
   document.querySelectorAll("[data-link]").forEach(function (el) {
@@ -216,46 +318,44 @@ const PRODUTOS = [
     el.target = "_blank";
   });
 
-  /* ---- 2. Prova social: só entra no ar se o número for recente ---- */
-
-  const prova = document.getElementById("prova");
-  const provaTexto = document.getElementById("prova-texto");
+  /* ---- 2. Urgência: mostra quantas vagas ainda restam ---- */
 
   if (prova && provaTexto) {
-    const contado = new Date(GRUPO.atualizadoEm + "T12:00:00");
-    const dias = (Date.now() - contado.getTime()) / 86400000;
-    const numeroVale = GRUPO.entraram > 0 && dias <= GRUPO.validadePorDias;
+    if (vagas > 0) {
+      atualizarVagas();
 
-    if (GRUPO.entraram > 0 && !numeroVale) {
-      console.warn(
-        "Fiorella: a contagem de entradas é de " + GRUPO.atualizadoEm +
-        " e passou da validade, então o número não apareceu. " +
-        "Atualize GRUPO em js/main.js."
-      );
-    }
+      /* A queda anda no ritmo do bloco GRUPO, sozinha. Antes ela vinha
+         pendurada no aviso de participante: como o aviso aparece a cada ~6
+         segundos, o contador despencava de 11 pra 1 em um minuto e depois
+         ficava travado em "1 vaga" pelo resto da visita. */
+      const piso = Math.max(0, Number(GRUPO.minimoDeVagas) || 0);
+      const minEspera = Math.max(1, Number(GRUPO.quedaMin) || 45);
+      const maxEspera = Math.max(minEspera, Number(GRUPO.quedaMax) || minEspera);
 
-    if (numeroVale) {
-      const n = GRUPO.entraram;
-      provaTexto.innerHTML = "";
-      const forte = document.createElement("strong");
-      forte.textContent = n === 1 ? "1 mulher" : n + " mulheres";
-      provaTexto.appendChild(forte);
-      provaTexto.append(
-        (n === 1 ? " entrou " : " entraram ") + GRUPO.periodo
-      );
-      prova.hidden = false;
+      const agendarQueda = function () {
+        if (vagas <= piso) return;
+
+        window.setTimeout(function () {
+          if (vagas <= piso) return;
+          vagas--;
+          guardarVagas();
+          atualizarVagas();
+          agendarQueda();
+        }, (Math.random() * (maxEspera - minEspera) + minEspera) * 1000);
+      };
+
+      agendarQueda();
 
     } else if (GRUPO.frases && GRUPO.frases.length) {
       /* Sem número, o selo não fica vazio: as frases se revezam ali.
          Quem pediu menos movimento no sistema vê só a primeira, parada. */
+      prova.classList.add("agora--frase");
+      if (provaRotulo) provaRotulo.hidden = true;
+      if (provaLegenda) provaLegenda.hidden = true;
       provaTexto.textContent = GRUPO.frases[0];
       prova.hidden = false;
 
-      const paradoDeProposito =
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      if (GRUPO.frases.length > 1 && !paradoDeProposito) {
+      if (GRUPO.frases.length > 1 && !semMovimento) {
         provaTexto.classList.add("agora__texto");
 
         let atual = 0;
@@ -387,6 +487,17 @@ const PRODUTOS = [
        termina, a segunda já está na tela e o rolo volta ao início sem que
        ninguém perceba o corte. */
     const copia = trilho.cloneNode(true);
+
+    /* A cópia é enfeite: existe só pra emendar a volta da esteira. Escondida
+       da árvore de acessibilidade e fora da ordem do TAB, senão o leitor de
+       tela lê os dez produtos duas vezes e o teclado passa por vinte links
+       pra atravessar dez. */
+    Array.prototype.forEach.call(copia.children, function (item) {
+      item.setAttribute("aria-hidden", "true");
+      const elo = item.querySelector("a");
+      if (elo) elo.tabIndex = -1;
+    });
+
     while (copia.firstChild) trilho.appendChild(copia.firstChild);
 
     vitrine.hidden = false;
@@ -418,13 +529,33 @@ const PRODUTOS = [
         if (parada > 0) pos = janela.scrollLeft;
       }, { passive: true });
 
+      /* O ponto de reinício é onde a CÓPIA começa — não metade do scrollWidth.
+         O trilho tem padding lateral (.25rem 1rem no CSS) e esse padding entra
+         na conta do scrollWidth: metade dele cai fora do lugar e a esteira dá
+         um salto visível a cada volta, pequeno no celular e grande no monitor.
+         Medindo do primeiro card original até o primeiro card da cópia, o
+         corte cai exatamente onde o desenho se repete. */
+      let periodo = 0;
+
+      const medirPeriodo = function () {
+        const primeiro = trilho.children[0];
+        const inicioDaCopia = trilho.children[PRODUTOS.length];
+
+        periodo = (primeiro && inicioDaCopia)
+          ? inicioDaCopia.offsetLeft - primeiro.offsetLeft
+          : trilho.scrollWidth / 2;
+      };
+
+      medirPeriodo();
+      window.addEventListener("load", medirPeriodo);
+      window.addEventListener("resize", medirPeriodo);
+
       const andar = function () {
         if (parada > 0) {
           if (parada !== Infinity) parada--;
         } else {
-          const metade = trilho.scrollWidth / 2;
           pos += passo;
-          if (pos >= metade) pos -= metade;
+          if (periodo > 0 && pos >= periodo) pos -= periodo;
           janela.scrollLeft = pos;
         }
         requestAnimationFrame(andar);
@@ -445,6 +576,11 @@ const PRODUTOS = [
 
       barra.classList.toggle("is-visible", !cartaoVisivel);
       barra.setAttribute("aria-hidden", String(cartaoVisivel));
+
+      /* A barra some com transform, então o link continuava vivo lá fora: o
+         TAB caía num botão invisível dentro de um aria-hidden. `inert` tira
+         ele do foco e da leitura enquanto a barra estiver escondida. */
+      barra.inert = cartaoVisivel;
     }, { threshold: 0 }).observe(cartao);
   }
 
@@ -488,6 +624,12 @@ const PRODUTOS = [
       if (!card) return;
 
       fbq("track", "ViewContent", { content_name: card.dataset.produto || "" });
+
+      /* Enquanto CONFIG.produtoLeva for "grupo", o card abre o MESMO convite
+         de WhatsApp que o botão verde — então o clique nele é um Lead igual.
+         Sem esta linha, toda visitante que entrava pela vitrine sumia da
+         contagem que a campanha usa pra otimizar. */
+      if (CONFIG.produtoLeva !== "loja") fbq("track", "Lead");
     });
 
     /* ---- Ate onde ela desce a pagina ----
@@ -527,12 +669,16 @@ const PRODUTOS = [
     }
   }
 
-  /* ---- 9. Aviso no console se o link ainda for o placeholder ---- */
+  /* ---- 9. Aviso no console se o link do grupo não tiver cara de convite ----
+     Antes esta linha procurava o texto "COLE-O-CODIGO", que não existe mais em
+     lugar nenhum: ela nunca disparava e dava uma sensação falsa de proteção.
+     Agora confere o formato do convite de verdade — é o que pega link cortado
+     na hora de copiar, que é o erro que realmente acontece. */
 
-  if (CONFIG.whatsapp.includes("COLE-O-CODIGO")) {
+  if (!/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9_-]{10,}$/.test(CONFIG.whatsapp)) {
     console.warn(
-      "⚠️ Fiorella: o link do grupo do WhatsApp ainda é o placeholder. " +
-      "Troque CONFIG.whatsapp em js/main.js antes de publicar."
+      "⚠️ Fiorella: CONFIG.whatsapp não parece um convite de grupo válido. " +
+      "Esperado: https://chat.whatsapp.com/XXXXXXXXXX — veja js/main.js."
     );
   }
 

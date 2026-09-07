@@ -6,12 +6,12 @@
 
 :root {
   /* Cores da marca (tiradas da logo) */
-  --rosa-fundo:   #FDDEE1;
-  --rosa-forte:   #DE6A80;
-  --rosa-escuro:  #C4556A;
-  --rosa-suave:   #FFF1F3;
-  --marrom:       #5A3E32;
-  --marrom-claro: #8A6A5C;
+  --rosa-fundo:   #FCEFF1;
+  --rosa-forte:   #D85F79;
+  --rosa-escuro:  #BC5069;
+  --rosa-suave:   #FFF5F6;
+  --marrom:       #46352E;
+  --marrom-claro: #68564E;
   --branco:       #FFFFFF;
 
   /* Verde do WhatsApp. O botão é verde de propósito: a mulher reconhece
@@ -19,16 +19,11 @@
   --zap:          #22B15C;
   --zap-escuro:   #1B9A4E;
 
-  /* Vermelho de urgência: mora na família do rosa da marca, mas é quente
-     o bastante pra não ser confundido com decoração. */
-  --urgente:        #C8283E;
-  --urgente-fundo:  #FDE8EB;
-
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --raio:   24px;
-  --sombra: 0 10px 30px rgba(90, 62, 50, .10);
+  --raio:   26px;
+  --sombra: 0 12px 34px rgba(70, 53, 46, .09);
   --largura: 30rem;
 }
 
@@ -58,13 +53,13 @@ body {
    ========================================================================== */
 
 .topbar {
-  background: var(--rosa-forte);
+  background: var(--rosa-escuro);
   color: var(--branco);
   text-align: center;
-  padding: .7rem 1rem;
+  padding: .78rem 1rem;
 
-  font-size: .78rem;
-  font-weight: 600;
+  font-size: .82rem;
+  font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
 }
@@ -76,8 +71,8 @@ body {
 .cartao {
   width: calc(100% - 2rem);
   max-width: var(--largura);
-  margin: 1.25rem auto 0;
-  padding: 1.75rem 1.5rem 1.5rem;
+  margin: 1.4rem auto 0;
+  padding: 2rem 1.6rem 1.75rem;
 
   background: var(--branco);
   border-radius: var(--raio);
@@ -86,11 +81,11 @@ body {
 }
 
 .cartao__foto {
-  width: 150px;
-  height: 150px;
+  width: 136px;
+  height: 136px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 1.25rem;
+  margin: 0 auto 1.5rem;
   border: 4px solid var(--branco);
   outline: 2px solid var(--rosa-forte);
   outline-offset: 1px;
@@ -99,11 +94,11 @@ body {
 .cartao__titulo {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(1.75rem, 7.4vw, 2.15rem);
-  line-height: 1.15;
+  font-size: clamp(1.95rem, 8vw, 2.35rem);
+  line-height: 1.1;
   letter-spacing: -.015em;
   text-wrap: balance;
-  margin-bottom: .85rem;
+  margin-bottom: 1rem;
 }
 
 .cartao__titulo em {
@@ -112,36 +107,52 @@ body {
 }
 
 .cartao__texto {
-  font-size: 1.03rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.52;
   color: var(--marrom-claro);
-  max-width: 24rem;
-  margin: 0 auto 1.5rem;
+  max-width: 25rem;
+  margin: 0 auto 1.65rem;
   text-wrap: pretty;
 }
 
-/* Prova social embaixo do botão. Tem que apertar, não acariciar: selo com
-   fundo quente, número em destaque e um ponto vermelho pulsando. O que ele
-   anuncia é número real — a pressão vem do tamanho da letra, não da mentira. */
-.agora {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-
-  margin-top: .95rem;
-  padding: .4rem .85rem;
-  border-radius: 999px;
-
-  background: var(--urgente-fundo);
-  color: var(--urgente);
-  font-size: .93rem;
-  font-weight: 500;
-  line-height: 1.25;
-  text-align: left;
+.cartao__texto strong {
+  color: var(--marrom);
+  font-weight: 600;
 }
 
-.agora strong {
-  font-weight: 700;
-  font-size: 1.02rem;
+/* O número de vagas ganha uma área própria. A informação fica dividida em
+   rótulo, número e legenda para ser entendida num olhar. */
+.agora {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem 1.05rem;
+  border: 2px dashed var(--rosa-forte);
+  border-radius: 18px;
+  background: var(--rosa-suave);
+  color: var(--rosa-escuro);
+  text-align: center;
+}
+
+.agora__rotulo,
+.agora__legenda {
+  color: var(--rosa-escuro);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .075em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.agora__numero {
+  margin: .12rem 0 .08rem;
+  color: var(--rosa-escuro);
+  font-family: var(--serif);
+  font-size: clamp(3rem, 15vw, 4rem);
+  font-weight: 600;
+  line-height: .95;
 }
 
 /* as frases do selo trocam sozinhas: some, troca escondida, volta */
@@ -151,25 +162,38 @@ body {
 
 .agora__texto.is-saindo { opacity: 0; }
 
-.agora__ponto {
-  width: .5rem;
-  height: .5rem;
-  border-radius: 50%;
-  background: var(--urgente);
-  flex-shrink: 0;
-  animation: pisca 1.4s ease-in-out infinite;
+.agora--frase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.5rem;
 }
 
-@keyframes pisca {
-  0%, 100% { opacity: 1;  box-shadow: 0 0 0 0 rgba(200, 40, 62, .55); }
-  70%      { opacity: .6; box-shadow: 0 0 0 .4rem rgba(200, 40, 62, 0); }
+.agora--frase .agora__numero {
+  margin: 0;
+  color: var(--marrom);
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.cartao__nota {
-  font-size: .8rem;
-  letter-spacing: .04em;
-  color: var(--marrom-claro);
-  margin-top: .35rem;
+.cartao__seguranca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: .75rem;
+  color: var(--rosa-escuro);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.cartao__seguranca-icone {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex: 0 0 auto;
+  color: var(--rosa-escuro);
 }
 
 /* ==========================================================================
@@ -183,12 +207,12 @@ body {
   gap: .65rem;
 
   width: 100%;
-  min-height: 3.75rem;         /* alvo confortável pro polegar */
-  padding: .9rem 1.25rem;
+  min-height: 4.2rem;         /* alvo confortável pro polegar */
+  padding: 1rem 1.25rem;
 
   font-family: var(--sans);
-  font-size: 1.12rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
   letter-spacing: .01em;
   text-decoration: none;
 
@@ -233,10 +257,17 @@ body {
 }
 
 .btn__icone {
-  display: grid;
-  place-items: center;
   flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
   color: var(--branco);
+}
+
+.whatsapp-icone {
+  display: block;
+  background: currentColor;
+  -webkit-mask: url("../assets/whatsapp.svg") center / contain no-repeat;
+  mask: url("../assets/whatsapp.svg") center / contain no-repeat;
 }
 
 /* ==========================================================================
@@ -262,24 +293,6 @@ body {
 }
 
 /* ==========================================================================
-   BLOCO "É CONFIÁVEL?"
-   ========================================================================== */
-
-.confianca {
-  text-align: left;
-  font-size: .92rem;
-  line-height: 1.55;
-  color: var(--marrom-claro);
-
-  background: var(--rosa-suave);
-  border-left: 4px solid var(--rosa-forte);
-  border-radius: 0 12px 12px 0;
-  padding: .9rem 1rem;
-}
-
-.confianca strong { color: var(--marrom); }
-
-/* ==========================================================================
    VITRINE ROTATÓRIA
    Sai das margens de propósito: a esteira precisa "sangrar" pra parecer
    que continua fora da tela.
@@ -298,7 +311,8 @@ body {
 .vitrine__lead,
 .vitrine__aviso {
   text-align: center;
-  font-size: .82rem;
+  font-size: .9rem;
+  font-weight: 500;
   color: var(--marrom-claro);
 }
 
@@ -396,7 +410,7 @@ body {
 }
 
 .produto__nome {
-  font-size: .85rem;
+  font-size: .9rem;
   font-weight: 500;
   line-height: 1.3;
 
@@ -498,7 +512,8 @@ body {
 }
 
 .passos__lista p {
-  font-size: .9rem;
+  font-size: .96rem;
+  font-weight: 500;
   color: var(--marrom-claro);
   line-height: 1.5;
 }
@@ -553,14 +568,6 @@ body {
   border-bottom: 1px solid rgba(222, 106, 128, .4);
 }
 
-.rodape__aviso {
-  font-size: .78rem;
-  line-height: 1.5;
-  color: var(--marrom-claro);
-  max-width: 26rem;
-  margin: 0 auto;
-}
-
 .rodape__copy {
   font-size: .75rem;
   color: var(--marrom-claro);
@@ -579,7 +586,7 @@ body {
   z-index: 20;
 
   padding: .7rem 1rem calc(.7rem + env(safe-area-inset-bottom));
-  background: rgba(253, 222, 225, .92);
+  background: rgba(252, 239, 241, .94);
   backdrop-filter: blur(8px);
   border-top: 1px solid rgba(90, 62, 50, .08);
 
@@ -595,6 +602,60 @@ body {
   max-width: var(--largura);
   margin-inline: auto;
   animation: none;
+}
+
+/* ==========================================================================
+   AVISO DE NOVA PARTICIPANTE
+   ========================================================================== */
+
+.member-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  z-index: 30;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  width: min(var(--largura), calc(100vw - 2rem));
+  padding: .82rem 1rem;
+  border: 1px solid var(--rosa-escuro);
+  border-radius: 999px;
+  background: var(--rosa-escuro);
+  box-shadow: 0 12px 30px rgba(122, 45, 64, .16);
+  color: var(--branco);
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 1rem);
+  transition: opacity .28s ease, transform .28s ease, bottom .25s ease;
+}
+
+.member-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.member-toast__whatsapp {
+  flex: 0 0 auto;
+  width: 1.55rem;
+  height: 1.55rem;
+  color: var(--branco);
+}
+
+.member-toast strong {
+  color: var(--branco);
+  font-weight: 700;
+}
+
+/* Quando a barra móvel entra, o aviso sobe para não cobrir o WhatsApp. */
+.barrafixa.is-visible + .member-toast {
+  bottom: calc(5.25rem + env(safe-area-inset-bottom));
 }
 
 /* ==========================================================================
@@ -619,11 +680,15 @@ body {
 
   .cartao { padding: 2.25rem 2.25rem 1.75rem; }
 
-  .cartao__foto { width: 168px; height: 168px; }
+  .cartao__foto { width: 156px; height: 156px; }
 
   .vitrine__trilho { padding-inline: max(1rem, calc((100vw - 64rem) / 2)); }
 
   .produto { width: 11rem; }
 
   .barrafixa { display: none; }
+
+  .member-toast {
+    bottom: 1.5rem;
+  }
 }
