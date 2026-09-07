@@ -630,6 +630,10 @@ body {
   line-height: 1.3;
   text-align: center;
 
+  /* Nome de duas palavras ("Maria Eduarda", "Ana Clara") empurra a frase pra
+     duas linhas, e sem isto a segunda fica com uma palavra solta. */
+  text-wrap: balance;
+
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 1rem);

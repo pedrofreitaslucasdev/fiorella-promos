@@ -91,20 +91,68 @@ const GRUPO = {
 
    Mantenha abaixo apenas a lista aprovada. Se ela ficar vazia, o aviso não
    aparece.
+
+   Em ordem alfabética só pra facilitar a sua vida na hora de acrescentar
+   (dá pra ver num relance se o nome já está lá). A ordem não importa pro
+   site: os nomes saem embaralhados, por sacola.
+
+   QUANTOS PRECISA: um nome por queda de vaga. Com vagasRestantes: 37 e
+   minimoDeVagas: 1 são 36 quedas, então a partir de 36 nomes ninguém repete
+   durante a contagem inteira. Hoje são 51 — sobra folga.
    -------------------------------------------------------------------------- */
 
 const PARTICIPANTES = [
-  "Mariana",
-  "Camila",
-  "Juliana",
-  "Beatriz",
-  "Larissa",
+  "Alice",
   "Amanda",
-  "Isabela",
+  "Ana Clara",
+  "Beatriz",
+  "Bianca",
+  "Bruna",
+  "Camila",
+  "Carolina",
+  "Daniela",
+  "Eduarda",
+  "Elisa",
+  "Emilly",
+  "Evelyn",
   "Fernanda",
-  "Vitória",
-  "Letícia",
+  "Flávia",
   "Gabriela",
+  "Giovana",
+  "Helena",
+  "Ingrid",
+  "Isabela",
+  "Jéssica",
+  "Juliana",
+  "Karen",
+  "Larissa",
+  "Letícia",
+  "Lívia",
+  "Lorena",
+  "Luana",
+  "Maitê",
+  "Manuela",
+  "Marcela",
+  "Maria Eduarda",
+  "Mariana",
+  "Milena",
+  "Natália",
+  "Nicole",
+  "Paloma",
+  "Patrícia",
+  "Rafaela",
+  "Renata",
+  "Sabrina",
+  "Samara",
+  "Sarah",
+  "Sophia",
+  "Tainá",
+  "Talita",
+  "Thais",
+  "Valentina",
+  "Vanessa",
+  "Vitória",
+  "Yasmin",
 ];
 
 
