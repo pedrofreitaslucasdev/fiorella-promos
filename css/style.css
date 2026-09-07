@@ -15,9 +15,16 @@
   --branco:       #FFFFFF;
 
   /* Verde do WhatsApp. O botão é verde de propósito: a mulher reconhece
-     na hora pra onde vai, e isso tira o medo de clicar. */
-  --zap:          #22B15C;
-  --zap-escuro:   #1B9A4E;
+     na hora pra onde vai, e isso tira o medo de clicar.
+
+     Escurecido em 07/09/2026 por contraste. O #22B15C antigo dava só
+     2,80:1 com o texto branco em cima — reprovava até no critério de
+     texto grande (3:1), e o botão da barra fixa, que é menor, precisa de
+     4,5:1. Este tem o MESMO matiz (144°) e a MESMA saturação (68%) do
+     antigo, só mais escuro: continua sendo o verde do WhatsApp, agora
+     legível pra quem enxerga pouco ou está no sol. Dá 4,69:1. */
+  --zap:          #198545;
+  --zap-escuro:   #156F3A;
 
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --sans:  "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -220,7 +227,7 @@ body {
   background: var(--zap);
   border: 0;
   border-radius: 999px;
-  box-shadow: 0 6px 16px rgba(34, 177, 92, .32);
+  box-shadow: 0 6px 16px rgba(25, 133, 69, .32);
   cursor: pointer;
 
   transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease;
@@ -233,11 +240,11 @@ body {
 @keyframes respira {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 6px 16px rgba(34, 177, 92, .32);
+    box-shadow: 0 6px 16px rgba(25, 133, 69, .32);
   }
   50% {
     transform: scale(1.035);
-    box-shadow: 0 10px 26px rgba(34, 177, 92, .5);
+    box-shadow: 0 10px 26px rgba(25, 133, 69, .5);
   }
 }
 

@@ -55,7 +55,7 @@ const CONFIG = {
    -------------------------------------------------------------------------- */
 
 const GRUPO = {
-  vagasRestantes: 37,
+  vagasRestantes: 22,
   minimoDeVagas: 1,
 
   // De quanto em quanto tempo aparece um nome — e, junto com ele, cai uma
@@ -66,8 +66,8 @@ const GRUPO = {
   // que fica com cara menos de robô.
   //
   // A CONTA QUE IMPORTA: cada nome derruba uma vaga, então o contador dura
-  // (vagasRestantes − minimoDeVagas) × queda. Com 37 vagas e 4s, são 36
-  // quedas = 2min24s até travar em "1 vaga". Depois disso os nomes continuam
+  // (vagasRestantes − minimoDeVagas) × queda. Com 22 vagas e 4s, são 21
+  // quedas = 1min24s até travar em "1 vaga". Depois disso os nomes continuam
   // aparecendo, só que o número para. Pra durar mais, sobe vagasRestantes.
   quedaMin: 4,
   quedaMax: 4,
@@ -96,9 +96,10 @@ const GRUPO = {
    (dá pra ver num relance se o nome já está lá). A ordem não importa pro
    site: os nomes saem embaralhados, por sacola.
 
-   QUANTOS PRECISA: um nome por queda de vaga. Com vagasRestantes: 37 e
-   minimoDeVagas: 1 são 36 quedas, então a partir de 36 nomes ninguém repete
-   durante a contagem inteira. Hoje são 51 — sobra folga.
+   QUANTOS PRECISA: um nome por queda de vaga. Com vagasRestantes: 22 e
+   minimoDeVagas: 1 são 21 quedas, então a partir de 21 nomes ninguém repete
+   durante a contagem inteira. Hoje são 51 — sobra bastante, e é folga que
+   serve: a lista só precisa crescer de novo se o vagasRestantes subir muito.
    -------------------------------------------------------------------------- */
 
 const PARTICIPANTES = [
