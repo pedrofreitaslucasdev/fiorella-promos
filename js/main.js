@@ -32,9 +32,14 @@ const CONFIG = {
   // Onde achar: Gerenciador de Eventos > o conjunto de dados > o numero
   // embaixo do nome. So o numero. Deixe "" para o site nao rastrear ninguem.
   //
-  // Esta e a pagina OFICIAL, a que as campanhas apontam. Se um dia existir
-  // uma copia dela em outro endereco, a copia tem que ficar com "" — dois
-  // sites escrevendo no mesmo conjunto de dados estragam o funil.
+  // 🔴 TROQUE AQUI: numero do pixel da Meta, usado para medir os anuncios.
+  // Onde achar: Gerenciador de Eventos > o conjunto de dados > o numero
+  // embaixo do nome. So o numero. Deixe "" para o site nao rastrear ninguem.
+  //
+  // Esta e a pagina OFICIAL, a que as campanhas apontam. A copia que mora em
+  // fiorella-teste.vercel.app fica com "" de proposito — de 02/09 a 07/09/2026
+  // os dois subiram com este mesmo numero e ficaram escrevendo no mesmo
+  // conjunto de dados, e isso estraga o funil.
   pixel: "294171596467632",
 
 };
@@ -57,10 +62,17 @@ const GRUPO = {
   vagasRestantes: 11,
   minimoDeVagas: 1,
 
-  // De quanto em quanto tempo cai uma vaga, em segundos (sorteia entre os
-  // dois). Antes a vaga caía junto com o aviso de participante: as dez vagas
-  // sumiam em 60 segundos e o número travava em 1 na cara de quem continuasse
-  // lendo. Nesse ritmo o contador dura o tempo de uma visita inteira.
+  // De quanto em quanto tempo aparece um nome — e, junto com ele, cai uma
+  // vaga. Os dois andam colados de propósito: é ver a Larissa entrar e o
+  // número descer na mesma hora que dá o aperto.
+  //
+  // O que mudou foi só o RELÓGIO. Antes o nome vinha a cada 5-8 segundos, e
+  // como cada nome derrubava uma vaga, as onze viravam uma em um minuto e o
+  // contador passava o resto da visita travado em "1 vaga". Neste ritmo o
+  // par nome+vaga dura a visita inteira.
+  //
+  // Quiser nome mais de perto? Sobe o vagasRestantes junto: com 11 vagas e
+  // nome a cada 6s, não tem conta que feche.
   quedaMin: 45,
   quedaMax: 90,
 
@@ -257,6 +269,15 @@ const PRODUTOS = [
     } catch (e) { /* idem: sem armazenamento, o contador só não sobrevive ao F5 */ }
   };
 
+  /* O relógio que o nome e a vaga dividem. */
+  const pisoDeVagas = Math.max(0, Number(GRUPO.minimoDeVagas) || 0);
+  const esperaMin = Math.max(1, Number(GRUPO.quedaMin) || 45);
+  const esperaMax = Math.max(esperaMin, Number(GRUPO.quedaMax) || esperaMin);
+
+  const proximaEspera = function () {
+    return (Math.random() * (esperaMax - esperaMin) + esperaMin) * 1000;
+  };
+
   const atualizarVagas = function () {
     if (!prova || !provaTexto || vagas <= 0) return;
 
@@ -291,6 +312,15 @@ const PRODUTOS = [
       memberToastName.textContent = PARTICIPANTES[indice];
       memberToast.hidden = false;
 
+      /* O nome e a vaga caem JUNTOS — é o par que faz a coisa funcionar.
+         O piso segura o número antes do zero: a página não pode anunciar
+         "0 vagas" com o convite do WhatsApp ainda aberto. */
+      if (vagas > pisoDeVagas) {
+        vagas--;
+        guardarVagas();
+        atualizarVagas();
+      }
+
       requestAnimationFrame(function () {
         memberToast.classList.add("show");
       });
@@ -299,10 +329,7 @@ const PRODUTOS = [
         memberToast.classList.remove("show");
       }, 4500);
 
-      window.setTimeout(
-        mostrarParticipante,
-        Math.floor(Math.random() * 3000) + 5000
-      );
+      window.setTimeout(mostrarParticipante, proximaEspera());
     };
 
     window.setTimeout(mostrarParticipante, 1500);
@@ -324,27 +351,8 @@ const PRODUTOS = [
     if (vagas > 0) {
       atualizarVagas();
 
-      /* A queda anda no ritmo do bloco GRUPO, sozinha. Antes ela vinha
-         pendurada no aviso de participante: como o aviso aparece a cada ~6
-         segundos, o contador despencava de 11 pra 1 em um minuto e depois
-         ficava travado em "1 vaga" pelo resto da visita. */
-      const piso = Math.max(0, Number(GRUPO.minimoDeVagas) || 0);
-      const minEspera = Math.max(1, Number(GRUPO.quedaMin) || 45);
-      const maxEspera = Math.max(minEspera, Number(GRUPO.quedaMax) || minEspera);
-
-      const agendarQueda = function () {
-        if (vagas <= piso) return;
-
-        window.setTimeout(function () {
-          if (vagas <= piso) return;
-          vagas--;
-          guardarVagas();
-          atualizarVagas();
-          agendarQueda();
-        }, (Math.random() * (maxEspera - minEspera) + minEspera) * 1000);
-      };
-
-      agendarQueda();
+      /* Quem faz o número cair é o aviso de participante, lá em cima:
+         nome na tela e vaga a menos são a mesma batida. */
 
     } else if (GRUPO.frases && GRUPO.frases.length) {
       /* Sem número, o selo não fica vazio: as frases se revezam ali.
