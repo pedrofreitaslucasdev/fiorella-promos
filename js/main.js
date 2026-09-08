@@ -38,6 +38,25 @@ const CONFIG = {
   // conjunto de dados, e isso estraga o funil.
   pixel: "294171596467632",
 
+  // 🔴 SE O SITE MUDAR DE ENDERECO, TROQUE ESTA LINHA JUNTO.
+  //
+  // O pixel so dispara quando a pagina esta rodando NESTE dominio. Existe
+  // porque apagar o numero em cada copia depende de alguem lembrar, e em
+  // 07/09/2026 o Gerenciador mostrou o conjunto de dados recebendo de CINCO
+  // enderecos: o oficial, fiorella-teste, fiorella-nova, localhost e
+  // 127.0.0.1 — 50 eventos de fora em 732 no mes. Com esta trava, clone novo
+  // e teste na maquina nao contaminam mais o funil da campanha, mesmo que
+  // subam com o numero do pixel preenchido.
+  //
+  // O preco de errar aqui e alto e SILENCIOSO: hostname escrito errado (ou
+  // esquecido no dia que sair um dominio proprio, tipo fiorellapromos.com.br)
+  // desliga a medicao inteira sem nenhum aviso na tela. Depois de mexer,
+  // conferir na aba Eventos de teste do Gerenciador de Eventos.
+  //
+  // Deixe "" para desligar a trava e o pixel voltar a disparar em qualquer
+  // endereco.
+  dominioDoPixel: "fiorella-promos.vercel.app",
+
 };
 
 
@@ -679,7 +698,12 @@ const PRODUTOS = [
      quem clicou num produto da vitrine (ViewContent) — é assim que a
      gente descobre se a vitrine ajuda ou atrapalha. */
 
-  if (CONFIG.pixel) {
+  /* A trava de domínio. Sem `dominioDoPixel` preenchido ela não existe e o
+     pixel dispara em qualquer endereço, como era antes. */
+  const noDominioOficial =
+    !CONFIG.dominioDoPixel || location.hostname === CONFIG.dominioDoPixel;
+
+  if (CONFIG.pixel && noDominioOficial) {
 
     /* Trecho oficial da Meta. Não mexa aqui: só carrega o fbevents.js. */
     !function (f, b, e, v, n, t, s) {
